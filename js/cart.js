@@ -29,6 +29,7 @@ function addQuantity() {
     count++;
     localStorage.setItem("quantity", count);
 };
+
 */
 
 class CartLine {

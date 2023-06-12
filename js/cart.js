@@ -1,3 +1,7 @@
+const newMap = new Map();
+
+
+
 class Product {
     constructor(obj) {
       this.id = obj._id;
@@ -100,5 +104,6 @@ JSON.parse(localStorage.getItem('cart')).forEach(obj => {
     console.log(obj.discount);
 });
 document.getElementById("products").innerHTML = list;
+console.log(newMap);
 
 

@@ -2,7 +2,7 @@ class Product {
     constructor(obj) {
       this.id = obj._id;
       this.name = obj.name;
-      this.image=obj.image;
+      this.image= obj.image;
       this.price = obj.price;
       this.discount = obj.discount;
       this.rating = obj.rating;
@@ -21,7 +21,7 @@ class CartLine extends Product {
     }
   
     getTotalPrice() {
-      return this.product.getPriceAfterDiscount() * this.quantity;
+      return this.price * this.quantity;
     }
   
     increment() {
@@ -67,7 +67,7 @@ class CartLine extends Product {
               </div>
           </div>
       </td>
-      <td class="align-middle">$${this.price * this.quantity}</td>
+      <td class="align-middle">$${this.getTotalPrice()}</td>
       <td class="align-middle">
           <button class="btn btn-sm btn-danger" type="button" onclick"removeCartLine()">
               <i class="fa fa-times"></i>
@@ -92,17 +92,12 @@ class Cart {
 }
 
 let list = "";
-const newMap = new Map();
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
     // listing selected products
     const cartItem = new CartLine(obj);
-    cartItem.increment()
     list += cartItem.getHTML();
-    newMap.set(cartItem.name, cartItem.quantity);
-    if (newMap.has(cartItem.name)){
-        newMap.get(cartItem.name)s
-    }
-
+    console.log(cartItem);
+    console.log(obj.discount);
 });
 document.getElementById("products").innerHTML = list;
 

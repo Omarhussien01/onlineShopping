@@ -13,7 +13,7 @@ class Product {
 
 class CartLine extends Product {
     quantity;
-    constructor(name, quantity = 1) {
+    constructor(name, product, quantity = 1) {
         super(name);
         this.quantity = quantity;
     }
@@ -30,7 +30,7 @@ class CartLine extends Product {
       if (this.quantity > 1) this.quantity--;
     }
   
-    getHTML() {
+    getHTML(quantity) {
       return `<tr id="cartLine">
       <td class="align-middle">
           <img src="${this.image}" alt="" style="width: 50px" />
@@ -93,10 +93,39 @@ class Cart {
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
     // listing selected products
     const cartItem = new CartLine(obj);
+   console.log(cartItem);
+   
     list += cartItem.getHTML();
-    //console.log(cartItem);
-    //console.log(obj.discount);
+    
+    if (newMap.has(cartItem.name)){
+        newMap.set(cartItem.name,newMap.get(cartItem.name)+1);
+        
+    }else{
+        newMap.set(cartItem.name, cartItem.quantity);
+    }
+
 });
+
+let dubData=JSON.parse(localStorage.getItem('cart'));
+dubData= dubData.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.name === value.name
+  ))
+)
+
+dubData.forEach(element=>{
+    element.quantity=newMap.get(element.name);
+    const cartItem = new CartLine(element);
+    cartItem.quantity=element.quantity
+    console.log(cartItem)
+    list += cartItem.getHTML();
+})
+
+
+
+
 document.getElementById("products").innerHTML = list;
+
+
 
 

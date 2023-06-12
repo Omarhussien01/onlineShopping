@@ -57,7 +57,7 @@ if(localStorage.getItem('cart')){
           
           let productId=e.target.getAttribute("data-id");
           let productData = result.data.filter(product=> product._id == productId);
-          let data ={id:productData[0]._id,name:productData[0].name,image:productData[0].image,price:productData[0].price-productData[0].price*productData[0].discount};
+          let data ={id:productData[0]._id,name:productData[0].name,image:productData[0].image,price:productData[0].price-productData[0].price*productData[0].discount,quantity:1};
           
           
           if(localStorage.getItem('cart')){
@@ -99,7 +99,7 @@ if(localStorage.getItem('cart')){
           
           let productId=e.target.getAttribute("data-id");
           let productData = result.data.filter(product=> product._id == productId);
-          let data ={id:productData[0]._id,name:productData[0].name,image:productData[0].image,price:productData[0].price-productData[0].price*productData[0].discount};
+          let data ={id:productData[0]._id,name:productData[0].name,image:productData[0].image,price:productData[0].price-productData[0].price*productData[0].discount,quantity:1};
           
           
           if(localStorage.getItem('cart')){

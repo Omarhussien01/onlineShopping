@@ -1,141 +1,3 @@
-const cartValue=document.getElementById('cartValue');
-if(localStorage.getItem('cart')){
-  cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-}
-(function () {
-  console.log(0);
-
-  const response = fetch("http://localhost:5000/api/categories/");
-  response.then((data) => {
-    data.json().then((d) => {
-      let list = "";
-      d.data.forEach((element) => {
-        list =
-          list +
-          `<a data-id="${element._id}" onclick="getCities(${element._id})" href="products.php?cat_id=${element._id}" class="nav-item nav-link">${element.name}</a>`;
-      });
-      document.getElementById("categories-menu").innerHTML = list;
-   
-    });
-  });
-
-  console.log(1);
-})();
-
-
-(function () {
-  console.log(0);
-
-  const response = fetch("http://localhost:5000/api/categories/");
-  response.then((data) => {
-    data.json().then((d) => {
-      let list = "";
-      d.data.sort((p1, p2) => (p1.productCount < p2.productCount) ? 1 : (p1.productCount > p2.productCount) ? -1 : 0);
-      d.data.splice(4, d.data.length);
-      d.data.forEach(obj => {
-        let item = new Product(obj);
-        list += item.getHTML();
-      });
-      document.getElementById("myDiv").innerHTML = list;
-    });
-  });
-})();
-
-
-(function () {
-  fetch("http://localhost:5000/api/products/getFeatured")
-  .then(response => response.json())
-  .then(result => {
-    let list ='';
-    
-    result.data.slice(0,8).forEach((item)=>{
-      let element=new Product(item);
-      list+=element.getHomeHTML();
-      document.getElementById('products').innerHTML=list;
-      document.querySelectorAll(".cart").forEach((element)=>{
-        element.addEventListener("click", e=>{
-          
-          let productId=e.target.getAttribute("data-id");
-          let productData = result.data.filter(product=> product._id == productId);
-          let data ={id:productData[0]._id,name:productData[0].name,image:productData[0].image,price:productData[0].price-productData[0].price*productData[0].discount,quantity:1};
-          
-          
-          if(localStorage.getItem('cart')){
-            
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data);
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }else{
-            cartValue.innerHTML=1
-            localStorage.setItem('cart',"[]")
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data)
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-            
-          }
-        })
-      })
-    
-    })
-  })
-  .catch(error => console.log('error', error));
-})();
-
-
-
-(function () {
-  fetch("http://localhost:5000/api/products/getRecent")
-  .then(response => response.json())
-  .then(result => {
-    let list ='';
-    result.data.forEach((item)=>{
-      let element=new Product(item);
-      list+=element.getHomeHTML();
-      document.getElementById('recent').innerHTML=list;
-      document.querySelectorAll(".cart").forEach((element)=>{
-        element.addEventListener("click", e=>{
-          
-          let productId=e.target.getAttribute("data-id");
-          let productData = result.data.filter(product=> product._id == productId);
-          let data ={id:productData[0]._id,name:productData[0].name,image:productData[0].image,price:productData[0].price-productData[0].price*productData[0].discount,quantity:1};
-          
-          
-          if(localStorage.getItem('cart')){
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data);
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }else{
-            
-            localStorage.setItem('cart',"[]")
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data)
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }
-        })
-      })
-     // console.log(JSON.parse(localStorage.getItem("allProducts")))
-    })
-  })
-  .catch(error => console.log('error', error));
-})();
-
-function addToCart(id){
-cartArray=[];
-let products = JSON.parse(localStorage.getItem("allProducts"));
-for(let i=0;i<products.length;i++){
- // console.log(products[i]["_id"])
-  if(products[i]["_id"]==id){
-    cartArray.push(products[i]);
-    console.log(cartArray)
-  }
-}
-}
-
-
 class Product {
   constructor(obj) {
     this.id = obj._id;
@@ -182,8 +44,7 @@ class Product {
     <small class="far fa-star text-primary mr-1"></small>
     <small>${this.rating_count}</small>
   </div>`;
-  }
-  }
+  }}
 
   getHomeHTML() {
     return `<div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -192,7 +53,7 @@ class Product {
         <img class="img-fluid w-100" src="${this.image}" alt="">
         <div class="product-action">
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)" >
-          <i  data-id="${this.id}" class="fa fa-shopping-cart cart"></i></a>
+          <i  data-id="${this.name}" class="fa fa-shopping-cart cart"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-sync-alt"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-search"></i></a>
@@ -229,6 +90,139 @@ class Product {
     `;
   }
 }
+
+const cartValue=document.getElementById('cartValue');
+if(localStorage.getItem('cart')){
+  cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
+}
+
+
+(function () {
+  console.log(0);
+
+  const response = fetch("http://localhost:5000/api/categories/");
+  response.then((data) => {
+    data.json().then((d) => {
+      let list = "";
+      d.data.forEach((element) => {
+        list =
+          list +
+          `<a data-id="${element._id}" onclick="getCities(${element._id})" href="products.php?cat_id=${element._id}" class="nav-item nav-link">${element.name}</a>`;
+      });
+      document.getElementById("categories-menu").innerHTML = list;
+   
+    });
+  });
+
+  console.log(1);
+})();
+
+
+(function () {
+  console.log(0);
+
+  const response = fetch("http://localhost:5000/api/categories/");
+  response.then((data) => {
+    data.json().then((d) => {
+      let list = "";
+      d.data.sort((p1, p2) => (p1.productCount < p2.productCount) ? 1 : (p1.productCount > p2.productCount) ? -1 : 0);
+      d.data.splice(4, d.data.length);
+      d.data.forEach(obj => {
+        let item = new Product(obj);
+        list += item.getHTML();
+      });
+      document.getElementById("myDiv").innerHTML = list;
+    });
+  });
+})();
+
+
+(function () {
+  fetch("http://localhost:5000/api/products/getFeatured")
+  .then(response => response.json())
+  .then(result => {
+    let list ='';
+    result.data.slice(0,8).forEach((item)=>{
+      
+      let element=new Product(item);
+      list+=element.getHomeHTML();
+      document.getElementById('products').innerHTML=list;
+      document.querySelectorAll(".cart").forEach((element)=>{
+      element.addEventListener("click", e=>{
+          
+          let productId=e.target.getAttribute("data-id");
+          let productData = result.data.filter(product=> product.name== productId);
+          let data ={name:productData[0]['name'],image:productData[0]["image"],price:productData[0]["price"]-productData[0]["price"]*productData[0]["discount"],quantity:1};
+
+          console.log(data)
+          
+          
+          if(localStorage.getItem('cart')){
+            let oldData=JSON.parse(localStorage.getItem("cart"))
+            oldData.push(data);
+            localStorage.setItem("cart",JSON.stringify(oldData));
+            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
+          }else{
+            localStorage.setItem('cart',"[]")
+            let oldData=JSON.parse(localStorage.getItem("cart"))
+            oldData.push(data)
+            localStorage.setItem("cart",JSON.stringify(oldData));
+            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
+          }
+        })
+      })
+     // console.log(JSON.parse(localStorage.getItem("allProducts")))
+    })
+  })
+  .catch(error => console.log('error', error));
+})();
+
+
+
+(function () {
+  fetch("http://localhost:5000/api/products/getRecent")
+  .then(response => response.json())
+  .then(result => {
+    let list ='';
+    console.log("test")
+    result.data.slice(0,8).forEach((item)=>{
+      let element=new Product(item);
+      list+=element.getHomeHTML();
+      document.getElementById('recent').innerHTML=list;
+      document.querySelectorAll(".cart").forEach((element)=>{
+       
+        element.addEventListener("click", e=>{
+          console.log("click");
+          let productId=e.target.getAttribute("data-id");
+          let productData = result.data.filter(product=> product.name== productId);
+          let data ={name:productData[0]['name'],image:productData[0]["image"],price:productData[0]["price"]-productData[0]["price"]*productData[0]["discount"],quantity:1};
+
+          console.log(data)
+          
+          
+          if(localStorage.getItem('cart')){
+            let oldData=JSON.parse(localStorage.getItem("cart"))
+            oldData.push(data);
+            localStorage.setItem("cart",JSON.stringify(oldData));
+            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
+          }else{
+            localStorage.setItem('cart',"[]")
+            let oldData=JSON.parse(localStorage.getItem("cart"))
+            oldData.push(data)
+            localStorage.setItem("cart",JSON.stringify(oldData));
+            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
+          }
+        })
+      })
+     // console.log(JSON.parse(localStorage.getItem("allProducts")))
+    })
+  })
+  .catch(error => console.log('error', error));
+})();
+
+
+
+
 
 
 

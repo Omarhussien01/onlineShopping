@@ -96,7 +96,6 @@ class Cart {
 
 let list = "";
 const newMap = new Map();
-const newMap = new Map();
 
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
 
@@ -125,8 +124,7 @@ dubData.forEach(element=>{
 
 
 document.getElementById("products").innerHTML = list;
-console.log(newMap);
-console.log(dubData);
+
 
 
 

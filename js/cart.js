@@ -31,7 +31,6 @@ class CartLine extends Product {
     }
   
     getHTML() {
-    getHTML() {
       return `<tr id="cartLine">
       <td class="align-middle">
           <img src="${this.image}" alt="" style="width: 50px" />
@@ -80,24 +79,12 @@ class CartLine extends Product {
     }
 }
 
-class Cart {
-    cartlines;
-    constructor(productsArray) {
-      this.cartlines = [];
-      //loop to add products into cartlines array
-    }
-  
-    remove(productId) {}
-  
-    getTotal() {}
-  
-    getSubTotal() {}
-}
-
 let list = "";
 const newMap = new Map();
 
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
+    console.log(obj.name);
+    console.log(obj.quantity);
 
     if (newMap.has(obj.name)){
         newMap.set(obj.name,newMap.get(obj.name)+1);
@@ -108,7 +95,8 @@ JSON.parse(localStorage.getItem('cart')).forEach(obj => {
 
 });
 
-let dubData=JSON.parse(localStorage.getItem('cart'));dubData= dubData.filter((value, index, self) =>
+let dubData=JSON.parse(localStorage.getItem('cart'));
+dubData= dubData.filter((value, index, self) =>
   index === self.findIndex((t) => (
     t.name === value.name
   ))
@@ -118,12 +106,54 @@ dubData.forEach(element=>{
     element.quantity=newMap.get(element.name);
     const cartItem = new CartLine(element);
     cartItem.quantity = element.quantity
-    console.log(cartItem)
     list += cartItem.getHTML();
 });
 
+document.addEventListener('click',e=>{
+
+    if(e.target.classList.contains('incBtn')){
+        let priceDiv=e.target.parentElement.parentElement.parentElement.parentElement.parentElement.children[3];
+        let inputElement=e.target.parentElement.parentElement.parentElement.children[1];
+        let inputValue=+e.target.parentElement.parentElement.parentElement.children[1].value;
+        let  uName=e.target.getAttribute("data-id");
+        let order = dubData.filter(product=> product.name== uName);
+        inputValue++;
+        order[0].quantity=inputValue;
+        inputElement.value=inputValue;
+        priceDiv.innerText=`$${inputValue*order[0].price}`
+        localStorage.setItem('cart',JSON.stringify(dubData));
+
+    }else if(e.target.classList.contains('remove')){
+
+        let tr=e.target.parentElement.parentElement.parentElement;
+        let  uName=e.target.getAttribute("data-id");
+        let order = dubData.filter(product=> product.name!= uName);
+        tr.remove();
+        localStorage.setItem('cart',JSON.stringify(order));
+
+    }else if(e.target.classList.contains('decBtn')){
+
+        console.log(true)
+        let priceDiv=e.target.parentElement.parentElement.parentElement.parentElement.parentElement.children[3];
+        let inputElement=e.target.parentElement.parentElement.parentElement.children[1];
+        let inputValue=+e.target.parentElement.parentElement.parentElement.children[1].value;
+        
+        let  uName=e.target.getAttribute("data-id");
+        let order = dubData.filter(product=> product.name== uName);
+        
+        if(inputValue>1){
+            inputValue--;
+            order[0].quantity=inputValue;
+            inputElement.value=inputValue;
+            priceDiv.innerText=`$${inputValue*order[0].price}`
+            localStorage.setItem('cart',JSON.stringify(dubData))
+        }  
+    }
+
+});
 
 document.getElementById("products").innerHTML = list;
+console.log(newMap);
 
 
 

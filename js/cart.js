@@ -1,7 +1,3 @@
-const newMap = new Map();
-
-
-
 class Product {
     constructor(obj) {
       this.id = obj._id;
@@ -16,11 +12,9 @@ class Product {
 } 
 
 class CartLine extends Product {
-    product;
     quantity;
-    constructor(name, product, quantity = 1) {
+    constructor(name, quantity = 1) {
         super(name);
-        this.product = product;
         this.quantity = quantity;
     }
   
@@ -95,15 +89,14 @@ class Cart {
     getSubTotal() {}
 }
 
-let list = "";
+
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
     // listing selected products
     const cartItem = new CartLine(obj);
     list += cartItem.getHTML();
-    console.log(cartItem);
-    console.log(obj.discount);
+    //console.log(cartItem);
+    //console.log(obj.discount);
 });
 document.getElementById("products").innerHTML = list;
-console.log(newMap);
 
 

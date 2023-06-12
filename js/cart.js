@@ -18,7 +18,7 @@ class Product {
 class CartLine extends Product {
     product;
     quantity;
-    constructor(name, product, quantity = 1) {
+    constructor(name, product, quantity=1 ) {
         super(name);
         this.product = product;
         this.quantity = quantity;
@@ -59,7 +59,7 @@ class CartLine extends Product {
               <input
               type="text" 
               class="quantityVal form-control form-control-sm bg-secondary border-0 text-center"
-              value=${quantity} readonly
+              value=${this.quantity} readonly
               />
               <div class="input-group-btn">
                   <button
@@ -120,15 +120,15 @@ dubData= dubData.filter((value, index, self) =>
 
 dubData.forEach(element=>{
     element.quantity=newMap.get(element.name);
-    console.log(element);
-})
-
-dubData.forEach(element=>{
     const cartItem = new CartLine(element);
-    list += cartItem.getHTML(element.quantity);
+    cartItem.quantity=element.quantity
+    console.log(cartItem)
+    list += cartItem.getHTML();
 })
 
-console.log(dubData);
+
+
+
 document.getElementById("products").innerHTML = list;
 console.log(newMap);
 

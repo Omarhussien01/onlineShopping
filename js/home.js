@@ -33,22 +33,8 @@ if(localStorage.getItem('cart')){
       d.data.sort((p1, p2) => (p1.productCount < p2.productCount) ? 1 : (p1.productCount > p2.productCount) ? -1 : 0);
       d.data.splice(4, d.data.length);
       d.data.forEach(obj => {
-          list = list +
-          `
-          <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-              <a class="text-decoration-none" href="">
-                  <div class="cat-item d-flex align-items-center mb-4">
-                      <div class="overflow-hidden" style="width: 100px; height: 100px" id>
-                          <img class="img-fluid" src="${obj.image}" alt="" />
-                      </div>
-                      <div class="flex-fill pl-3">
-                          <h6>${obj.name}</h6>
-                          <small class="text-body">${obj.productCount}</small>
-                      </div>
-                  </div>
-              </a>
-          </div>
-          `;
+        let item = new Product(obj);
+        list += item.getHTML();
       });
       document.getElementById("myDiv").innerHTML = list;
     });
@@ -159,6 +145,7 @@ class Product {
     this.discount = obj.discount;
     this.rating = obj.rating;
     this.rating_count = obj.rating_count;
+    this.product_count = obj.productCount;
   }
 
   getPriceAfterDiscount() {
@@ -226,7 +213,20 @@ class Product {
   }
 
   getHTML() {
-    return ``;
+    return `<div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+        <a class="text-decoration-none" href="">
+            <div class="cat-item d-flex align-items-center mb-4">
+                <div class="overflow-hidden" style="width: 100px; height: 100px" id>
+                    <img class="img-fluid" src="${this.image}" alt="" />
+                </div>
+                <div class="flex-fill pl-3">
+                    <h6>${this.name}</h6>
+                    <small class="text-body">${this.product_count}</small>
+                </div>
+            </div>
+        </a>
+    </div>
+    `;
   }
 }
 
@@ -251,6 +251,10 @@ class CartLine {
 
   decrement() {
     if (this.quantity > 1) this.quantity--;
+  }
+
+  getHTML() {
+    return `<div>Hello</div>`
   }
 }
 

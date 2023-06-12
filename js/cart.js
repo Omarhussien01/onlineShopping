@@ -36,7 +36,7 @@ class CartLine extends Product {
       if (this.quantity > 1) this.quantity--;
     }
   
-    getHTML() {
+    getHTML(quantity) {
       return `<tr id="cartLine">
       <td class="align-middle">
           <img src="${this.image}" alt="" style="width: 50px" />
@@ -59,7 +59,7 @@ class CartLine extends Product {
               <input
               type="text" 
               class="quantityVal form-control form-control-sm bg-secondary border-0 text-center"
-              value=${this.quantity} readonly
+              value=${quantity} readonly
               />
               <div class="input-group-btn">
                   <button
@@ -99,20 +99,39 @@ let list = "";
 
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
     // listing selected products
-    const cartItem = new CartLine(obj);
-   console.log(cartItem);
+   // const cartItem = new CartLine(obj);
+   // list += cartItem.getHTML();
    
-    list += cartItem.getHTML();
     
-    if (newMap.has(cartItem.name)){
-        newMap.set(cartItem.name,newMap.get(cartItem.name)+1);
-        
+    if (newMap.has(obj.name)){
+        newMap.set(obj.name,newMap.get(obj.name)+1);    
     }else{
-        newMap.set(cartItem.name, cartItem.quantity);
+        newMap.set(obj.name, obj.quantity);
     }
 
 });
+
+let dubData=JSON.parse(localStorage.getItem('cart'));
+dubData= dubData.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.name === value.name
+  ))
+)
+
+dubData.forEach(element=>{
+    element.quantity=newMap.get(element.name);
+    console.log(element);
+})
+
+dubData.forEach(element=>{
+    const cartItem = new CartLine(element);
+    list += cartItem.getHTML(element.quantity);
+})
+
+console.log(dubData);
 document.getElementById("products").innerHTML = list;
 console.log(newMap);
+
+
 
 

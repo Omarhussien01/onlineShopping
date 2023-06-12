@@ -1,3 +1,7 @@
+const newMap = new Map();
+
+
+
 class Product {
     constructor(obj) {
       this.id = obj._id;
@@ -92,18 +96,23 @@ class Cart {
 }
 
 let list = "";
-const newMap = new Map();
+
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
     // listing selected products
     const cartItem = new CartLine(obj);
-    cartItem.increment()
+   console.log(cartItem);
+   
     list += cartItem.getHTML();
-    newMap.set(cartItem.name, cartItem.quantity);
+    
     if (newMap.has(cartItem.name)){
-        newMap.get(cartItem.name)s
+        newMap.set(cartItem.name,newMap.get(cartItem.name)+1);
+        
+    }else{
+        newMap.set(cartItem.name, cartItem.quantity);
     }
 
 });
 document.getElementById("products").innerHTML = list;
+console.log(newMap);
 
 

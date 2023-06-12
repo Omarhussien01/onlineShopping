@@ -31,6 +31,7 @@ class CartLine extends Product {
     }
   
     getHTML() {
+    getHTML() {
       return `<tr id="cartLine">
       <td class="align-middle">
           <img src="${this.image}" alt="" style="width: 50px" />
@@ -43,32 +44,36 @@ class CartLine extends Product {
               style="width: 100px"
           >
               <div class="input-group-btn">
-                  <button
+                  <button 
+                      
                       type="button" id="subtract"
-                      class="decBtn btn btn-sm btn-primary btn-minus" 
+                      class="btn btn-sm btn-primary btn-minus" 
                   >
-                      <i class="fa fa-minus"></i>
+                      <i data-id="${this.name}" class="fa fa-minus decBtn"></i>
                   </button>
               </div>
               <input
+              
               type="text" 
               class="quantityVal form-control form-control-sm bg-secondary border-0 text-center"
               value=${this.quantity} readonly
               />
               <div class="input-group-btn">
                   <button
+                      
                       type="button" id="add"
-                      class="incBtn btn btn-sm btn-primary btn-plus" 
+                      class=" btn btn-sm btn-primary btn-plus" 
+                      
                   >
-                      <i class="fa fa-plus"></i>
+                      <i data-id="${this.name}" class="fa fa-plus incBtn"></i>
                   </button>
               </div>
           </div>
       </td>
       <td class="align-middle">$${this.getTotalPrice()}</td>
       <td class="align-middle">
-          <button class="btn btn-sm btn-danger" type="button" onclick"removeCartLine()">
-              <i class="fa fa-times"></i>
+          <button class="btn btn-sm btn-danger" type="button" ">
+              <i data-id="${this.name}"  class="fa fa-times  remove"></i>
           </button>
       </td>
     </tr>`
@@ -90,6 +95,7 @@ class Cart {
 }
 
 let list = "";
+const newMap = new Map();
 const newMap = new Map();
 
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {

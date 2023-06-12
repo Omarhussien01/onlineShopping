@@ -52,7 +52,7 @@ class Product {
       <div class="product-img position-relative overflow-hidden">
         <img class="img-fluid w-100" src="${this.image}" alt="">
         <div class="product-action">
-          <a class="btn btn-outline-dark btn-square" href="javascript:void(0)" >
+          <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"  onclick="addToCart('${this.name.replace("'","")}', ${this.getPriceAfterDiscount()}, '${this.image}')">
           <i  data-id="${this.name}" class="fa fa-shopping-cart cart"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-sync-alt"></i></a>
@@ -147,31 +147,6 @@ if(localStorage.getItem('cart')){
       let element=new Product(item);
       list+=element.getHomeHTML();
       document.getElementById('products').innerHTML=list;
-      document.querySelectorAll(".cart").forEach((element)=>{
-      element.addEventListener("click", e=>{
-          
-          let productId=e.target.getAttribute("data-id");
-          let productData = result.data.filter(product=> product.name== productId);
-          let data ={name:productData[0]['name'],image:productData[0]["image"],price:productData[0]["price"]-productData[0]["price"]*productData[0]["discount"],quantity:1};
-
-          console.log(data)
-          
-          
-          if(localStorage.getItem('cart')){
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data);
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }else{
-            localStorage.setItem('cart',"[]")
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data)
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }
-        })
-      })
-     // console.log(JSON.parse(localStorage.getItem("allProducts")))
     })
   })
   .catch(error => console.log('error', error));
@@ -189,82 +164,28 @@ if(localStorage.getItem('cart')){
       let element=new Product(item);
       list+=element.getHomeHTML();
       document.getElementById('recent').innerHTML=list;
-      document.querySelectorAll(".cart").forEach((element)=>{
-       
-        element.addEventListener("click", e=>{
-          console.log("click");
-          let productId=e.target.getAttribute("data-id");
-          let productData = result.data.filter(product=> product.name== productId);
-          let data ={name:productData[0]['name'],image:productData[0]["image"],price:productData[0]["price"]-productData[0]["price"]*productData[0]["discount"],quantity:1};
-
-          console.log(data)
-          
-          
-          if(localStorage.getItem('cart')){
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data);
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }else{
-            localStorage.setItem('cart',"[]")
-            let oldData=JSON.parse(localStorage.getItem("cart"))
-            oldData.push(data)
-            localStorage.setItem("cart",JSON.stringify(oldData));
-            cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
-          }
-        })
-      })
-     // console.log(JSON.parse(localStorage.getItem("allProducts")))
     })
   })
   .catch(error => console.log('error', error));
 })();
 
-
-
-
-
-
-
-
-class CartLine {
-  product;
-  quantity;
-  constructor(product, quantity = 1) {
-    this.product = product;
-    this.quantity = quantity;
-  }
-
-  getTotalPrice() {
-    return this.product.getPriceAfterDiscount() * this.quantity;
-  }
-
-  increment() {
-    this.quantity++;
-  }
-
-  decrement() {
-    if (this.quantity > 1) this.quantity--;
-  }
-
-  getHTML() {
-    return `<div>Hello</div>`
-  }
+function addToCart(productName, price, image) {
+  console.log("button clicked")
+  let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+  cartItems.push({ name: productName, price: price, image: image,quantity:1});
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+  console.log("Product added to cart:", productName,price,image);
 }
 
-class Cart {
-  cartlines;
-  constructor(productsArray) {
-    this.cartlines = [];
-    //loop to add products into cartlines array
-  }
 
-  remove(productId) {}
 
-  getTotal() {}
 
-  getSubTotal() {}
-}
+
+
+
+
+
+
 
 
 

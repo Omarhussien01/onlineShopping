@@ -15,6 +15,7 @@ function sortByPopularity() {
       .then((resData) => {
         const sortedProducts = resData.data.sort((a, b) => b.rating - a.rating);
         displayProducts(sortedProducts);
+
       });
   }
   

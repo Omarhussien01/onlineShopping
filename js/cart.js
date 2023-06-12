@@ -138,7 +138,7 @@ document.addEventListener('click',e=>{
         inputValue++;
         order[0].quantity=inputValue;
         inputElement.value=inputValue;
-        priceDiv.innerText=`$${inputValue*order[0].price}`
+        priceDiv.innerText=`$${(inputValue*order[0].price).toFixed(2)}`
         localStorage.setItem('cart',JSON.stringify(dubData))
     }else if(e.target.classList.contains('remove')){
         let tr=e.target.parentElement.parentElement.parentElement;
@@ -159,7 +159,7 @@ document.addEventListener('click',e=>{
             inputValue--;
             order[0].quantity=inputValue;
             inputElement.value=inputValue;
-            priceDiv.innerText=`$${inputValue*order[0].price}`
+            priceDiv.innerText=`$${(inputValue*order[0].price).toFixed(2)}`
             localStorage.setItem('cart',JSON.stringify(dubData))
         }  
     }

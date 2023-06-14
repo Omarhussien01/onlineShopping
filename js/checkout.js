@@ -119,6 +119,7 @@ function placeOrder() {
           "order_date": JSON.stringify(new Date()),
           "order_details": JSON.parse(localStorage.getItem('cart'))
         });
+        
   
         var requestOptions = {
           method: 'POST',

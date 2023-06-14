@@ -115,26 +115,9 @@
                     <div class="navbar-nav mr-auto py-0">
                       <a href="index.html" class="nav-item nav-link">Home</a>
                       <a href="shop.html" class="nav-item nav-link">Shop</a>
-                      <a href="checkout.html" class="nav-item nav-link">Checkout</a>
+                      <a href="cart.html" class="nav-item nav-link">Cart</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                      <a href="" class="btn px-0">
-                        <i class="fas fa-heart text-primary"></i>
-                        <span
-                          class="badge text-secondary border border-secondary rounded-circle"
-                          style="padding-bottom: 2px"
-                          >0</span
-                        >
-                      </a>
-                      <a href="" class="btn px-0 ml-3">
-                        <i class="fas fa-shopping-cart text-primary"></i>
-                        <span
-                          class="badge text-secondary border border-secondary rounded-circle"
-                          style="padding-bottom: 2px"
-                          >0</span
-                        >
-                      </a>
-                    </div>
+                    
                   </div>
                 </nav>
               </div>
@@ -164,34 +147,34 @@
             <div class="col-lg-8">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
                 <div class="bg-light p-30 mb-5">
-                    <div class="row">
+                    <form id="form" class="row">
                         <div class="col-md-6 form-group">
                             <label>First Name</label>
-                            <input class="form-control" type="text" placeholder="John">
+                            <input class="form-control" type="text" placeholder="John" id="first_name" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Last Name</label>
-                            <input class="form-control" type="text" placeholder="Doe">
+                            <input class="form-control" type="text" placeholder="Doe" id="last_name"required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>E-mail</label>
-                            <input class="form-control" type="text" placeholder="example@email.com">
+                            <input class="form-control" type="text" placeholder="example@email.com" id="email" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Mobile No</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789">
+                            <input class="form-control" type="text" placeholder="+123 456 789" id="mobile" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Address Line 1</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
+                            <input class="form-control" type="text" placeholder="123 Street" id="address1" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Address Line 2</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
+                            <input class="form-control" type="text" placeholder="123 Street" id="address2">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Country</label>
-                            <select class="custom-select">
+                            <select class="custom-select" id="country" required>
                                 <option selected>Egypt</option>
                                 <option>USA</option>
                                 <option>Algeria</option>
@@ -199,17 +182,17 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <input class="form-control" type="text" placeholder="New York" id="city" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <input class="form-control" type="text" placeholder="New York" id="state" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>ZIP Code</label>
-                            <input class="form-control" type="text" placeholder="123">
+                            <input class="form-control" type="text" placeholder="123" id="code" required>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="collapse mb-5" id="shipping-address">
                     <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Shipping Address</span></h5>
@@ -312,7 +295,7 @@
                                 <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
                             </div>
                         </div>
-                        <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                        <button class="btn btn-block btn-primary font-weight-bold py-3" onclick="placeOrder()">Place Order</button>
                     </div>
                 </div>
             </div>

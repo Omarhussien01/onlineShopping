@@ -127,6 +127,11 @@ dubData.forEach(element=>{
     list += cartItem.getHTML();
 })
 
+const cartValue=document.getElementsByClassName("cartValue")[0];
+if(localStorage.getItem('cartValue')){
+  cartValue.innerHTML=JSON.parse(localStorage.getItem('cartValue'));
+}
+let count =JSON.parse(localStorage.getItem('cartValue'))||0;
 
 document.addEventListener('click',e=>{
     if(e.target.classList.contains('incBtn')){
@@ -135,6 +140,9 @@ document.addEventListener('click',e=>{
         let inputValue=+e.target.parentElement.parentElement.parentElement.children[1].value;
         let  uName=e.target.getAttribute("data-id");
         let order = dubData.filter(product=> product.name== uName);
+        count++;
+        cartValue.innerHTML=count;
+        localStorage.setItem('cartValue', JSON.stringify(count))
         inputValue++;
         order[0].quantity=inputValue;
         inputElement.value=inputValue;
@@ -163,7 +171,6 @@ document.addEventListener('click',e=>{
             localStorage.setItem('cart',JSON.stringify(dubData))
         }  
     }
-
 })
 
 

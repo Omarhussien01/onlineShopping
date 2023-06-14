@@ -102,7 +102,7 @@ function displayProducts(products) {
         <i  data-id="${element.name}" class="fa fa-shopping-cart cart"></i>
         </a>
 
-          <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart"></i></a>
+          <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart "></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-sync-alt"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-search"></i></a>
         </div>
@@ -159,6 +159,11 @@ function changePage(page) {
   fetchProducts1();
 }
 
+const cartValue=document.getElementsByClassName("cartValue")[0];
+if(localStorage.getItem('cartValue')){
+  cartValue.innerHTML=JSON.parse(localStorage.getItem('cartValue'));
+}
+
 function fetchProducts1() {
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
@@ -178,14 +183,15 @@ fetch("http://localhost:5000/api/products/")
     fetchProducts1();
   });
 
+  let count = JSON.parse(localStorage.getItem('cartValue'))||0;
   function addToCart(productName, price, image, quantity=1) {
+    count++;
     console.log(productName);
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     cartItems.push({ name: productName, price: price, image: image,quantity:quantity});
     localStorage.setItem("cart", JSON.stringify(cartItems));
+    cartValue.innerHTML=count;
+    localStorage.setItem('cartValue', JSON.stringify(count))
     console.log("Product added to cart:", productName,price,image);
   }
- ///// addToCart('SAMSUNG TV's', 10100, 'img/product-3.jpg'
- ///addToCart('SAMSUNG TV's', 10100, 'img/product-3.jpg')
- //addToCart('Penguin', 245, 'img/product-9.jpg')
 // end pagination

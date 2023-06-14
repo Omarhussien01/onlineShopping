@@ -56,7 +56,10 @@ async function login(){
   console.log(json)
   localStorage.setItem("token",json.token) 
   console.log(`Welcome ${json.first_name} ${json.last_name}`);
-  location.replace("home.html");
+  if(response.ok){
+    location.replace("index.html");
+  }
+  
 }
 
 

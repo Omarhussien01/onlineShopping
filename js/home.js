@@ -54,7 +54,7 @@ class Product {
         <div class="product-action">
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"  onclick="addToCart('${this.name.replace("'","")}', ${this.getPriceAfterDiscount()}, '${this.image}')">
           <i  data-id="${this.name}" class="fa fa-shopping-cart cart"></i></a>
-          <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart"></i></a>
+          <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i name="loveBtn" class="far fa-heart heart"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-sync-alt"></i></a>
           <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="fa fa-search"></i></a>
         </div>
@@ -91,10 +91,11 @@ class Product {
   }
 }
 
-const cartValue=document.getElementById('cartValue');
-if(localStorage.getItem('cart')){
-  cartValue.innerHTML=JSON.parse(localStorage.getItem('cart')).length;
+const cartValue=document.getElementsByClassName("cartValue")[0];
+if(localStorage.getItem('cartValue')){
+  cartValue.innerHTML=JSON.parse(localStorage.getItem('cartValue'));
 }
+
 
 
 (function () {
@@ -160,6 +161,7 @@ if(localStorage.getItem('cart')){
   .then(result => {
     let list ='';
     console.log("test")
+    console.log(document.querySelectorAll(".heartButton"))
     result.data.slice(0,8).forEach((item)=>{
       let element=new Product(item);
       list+=element.getHomeHTML();
@@ -169,13 +171,45 @@ if(localStorage.getItem('cart')){
   .catch(error => console.log('error', error));
 })();
 
+let count =JSON.parse(localStorage.getItem('cartValue'))||0;
+
 function addToCart(productName, price, image) {
-  console.log("button clicked")
+  count+=1;
   let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
   cartItems.push({ name: productName, price: price, image: image,quantity:1});
   localStorage.setItem("cart", JSON.stringify(cartItems));
-  console.log("Product added to cart:", productName,price,image);
+  cartValue.innerHTML=count;
+  localStorage.setItem('cartValue', JSON.stringify(count))
+  console.log(count);
 }
+
+let love_counter = 0;
+
+function updateCounter() {
+  const counterElement = document.getElementById("love-counter");
+  counterElement.textContent = love_counter.toString();
+}
+document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("fa-heart")) {
+      love_counter++;
+      updateCounter();
+    }
+  });
+
+if(localStorage.getItem('token')!=null){
+  document.getElementById('login').style.visibility="hidden";
+}
+
+
+
+
+// console.log(document.querySelectorAll(".heartButton"))
+
+// document.querySelectorAll(".heartButton").forEach(button=>{
+//   button.addEvenListener('click', e=>{
+//     console.log("click click")
+//   })
+// })
 
 
 

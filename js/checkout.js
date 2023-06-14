@@ -1,20 +1,21 @@
 class Cart {
-    cartlines;
-    constructor(productsArray) {
-        this.cartlines = [];
-      //loop to add products into cartlines array
-      JSON.parse(localStorage.getItem('cart')).forEach(obj => {
-        this.cartlines.push(obj);
+  cartlines;
+  constructor(productsArray) {
+    this.cartlines = [];
+    //loop to add products into cartlines array
+    JSON.parse(localStorage.getItem('cart')).forEach(obj => {
+      this.cartlines.push(obj);
     });
-    }
-  
-    getProductList() {
+  }
 
-        return `<div class="d-flex justify-content-between">
-        <p>${this.cartlines[0].name} x (${this.cartlines[0].quantity})</p>
-        <p>$${this.cartlines[0].price*this.cartlines[0].quantity}</p>
-        </div>`
-    }
+  getProductList() {
+
+    return `<div class="d-flex justify-content-between">
+    <p>${this.cartlines[0].name} x (${this.cartlines[0].quantity})</p>
+    <p>$${this.cartlines[0].price*this.cartlines[0].quantity}</p>
+    </div>`
+    
+  }
 }
 
 let list = "";
@@ -46,17 +47,17 @@ for ( let i = 0; i < checkbox.length; i++ ) {
 }
 
 for (let i = 0; i < customerCart.cartlines.length; i++) {
-
-    subTotal += customerCart.cartlines[i].price*customerCart.cartlines[i].quantity;
+  
+  subTotal += customerCart.cartlines[i].price*customerCart.cartlines[i].quantity;
 
 }
 
 for (let i = 0; i < customerCart.cartlines.length; i++) {
 
-    list += customerCart.getProductList();
-    customerCart.cartlines.reverse();
-    customerCart.cartlines.pop();
-   
+  list += customerCart.getProductList();
+  customerCart.cartlines.reverse();
+  customerCart.cartlines.pop();
+  
 }
 
 list += customerCart.getProductList();
@@ -64,69 +65,95 @@ list += customerCart.getProductList();
 document.getElementById("productList").innerHTML = list;
 document.getElementById("subtotal").innerHTML = `$${subTotal.toFixed(2)}`;
 
-/*function placeOrder() {
-    const response = fetch("http://localhost:5000/api/categories/", {
-        method: 'POST',
-        body: JSON.stringify({id: '200'}),
-        token: JSON.parse(localStorage.getItem('token'))
-    });
-    response.then((data) => {
-        if(data.ok){
-            return  data.json()
-        }
-        throw new Error('Request failed!');
-    }, networkError => console.log(networkError.message)).then(jsonResponse => {
-        renderRespone(jsonResponse);
-    });
-}*/
-console.log(JSON.stringify(localStorage.getItem('token')));
-console.log(localStorage.getItem('token'));
-function placeOrder() {
-    var myHeaders = new Headers();
-myHeaders.append("x-access-token", JSON.stringify(localStorage.getItem('token')));
-myHeaders.append("Content-Type", "application/json");
 
-var raw = JSON.stringify({
-  "shipping_info": {
-    "first_name": "Ramy",
-    "last_name": "Ibrahim",
-    "email": "ramymibrahim@yahoo.com",
-    "mobile_number": "01092812848",
-    "address1": "20 M A",
-    "address2": "",
-    "country": "Egypt",
-    "city": "Cairo",
-    "state": "Zamalek",
-    "zip_code": "11211"
-  },
-  "sub_total_price": 100,
-  "shipping": 10,
-  "total_price": 110,
-  "user_id": "6346ac23bb862e01fe4b6535",
-  "order_date": "2022-01-01T00:00:00.000Z",
-  "order_details": [
-    {
-      "product_id": "6346c15ea060efd7cae40589",
-      "price": 25,
-      "qty": 2
-    },
-    {
-      "product_id": "6346c186a060efd7cae4058b",
-      "price": 25,
-      "qty": 2
-    }
-  ]
-});
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
+let validInput = document.getElementsByName('myInput');
+console.log(validInput);
 
-fetch("http://localhost:5000/api/orders/", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+function validation(){
+  let fr = document.getElementById('first_name').value;
+  let sc = document.getElementById('last_name').value;
+  let em = document.getElementById('email').value;
+  let mob = document.getElementById('mobile').value;
+  let add = document.getElementById('address1').value;
+  let ct = document.getElementById('city').value;
+  let st = document.getElementById('state').value;
+
+  if(localStorage.getItem('token')===null){
+    location.href='login.html';
+    return;
+  }else if (fr != '' && sc != '' && em != '' && mob != '' && add != '' && ct != '' && st != '') {
+    return true
+  }else {
+    alert('Please fill empty fields')
+  }
+
+  
 }
+
+function placeOrder() {
+  let count = 0;
+  if(validation()) {
+    for ( let i = 0; i < checkbox.length; i++ ) {
+      if (checkbox[i].checked === true) {
+        var myHeaders = new Headers();
+        myHeaders.append("x-access-token", localStorage.getItem("token"));
+  
+        var raw = JSON.stringify({
+          "shipping_info": {
+            "first_name": JSON.stringify(document.getElementById('first_name').value),
+            "last_name": JSON.stringify(document.getElementById('last_name').value),
+            "email": JSON.stringify(document.getElementById('email').value),
+            "mobile_number": JSON.stringify(document.getElementById('mobile').value),
+            "address1": JSON.stringify(document.getElementById('address1').value),
+            "address2": JSON.stringify(document.getElementById('address2').value),
+            "country": JSON.stringify(document.getElementById('country').value),
+            "city": JSON.stringify(document.getElementById('city').value),
+            "state": JSON.stringify(document.getElementById('state').value),
+            "zip_code": JSON.stringify(document.getElementById('code').value)
+          },
+          "sub_total_price": subTotal,
+          "shipping": subTotal,
+          "total_price": subTotal - tax * subTotal * 0.01,
+          "user_id": "6346ac23bb862e01fe4b6535",
+          "order_date": JSON.stringify(new Date()),
+          "order_details": JSON.parse(localStorage.getItem('cart'))
+        });
+  
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+  
+        fetch("http://localhost:5000/api/orders/", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+  
+        localStorage.removeItem('cart');
+        localStorage.removeItem('cartValue');
+
+        document.getElementById('form').reset();
+        document.getElementById('productList').innerHTML= '';
+        document.getElementById("subtotal").innerHTML= '';
+        document.getElementById("tax").innerHTML= '';
+        document.getElementById("total").innerHTML= ''; 
+        }else {
+          count++;
+          if (count === 3) {
+            alert('Please pick a payment method')
+           
+          }
+        }
+          
+    }
+  
+  }
+
+
+ 
+}
+
+

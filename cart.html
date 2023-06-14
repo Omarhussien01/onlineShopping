@@ -145,7 +145,7 @@
               id="navbarCollapse"
             >
               <div class="navbar-nav mr-auto py-0">
-                <a href="home.html" class="nav-item nav-link">Home</a>
+                <a href="index.html" class="nav-item nav-link">Home</a>
                 <a href="shop.html" class="nav-item nav-link">Shop</a>
                 <a href="checkout.html" class="nav-item nav-link">Checkout</a>
               </div>
@@ -161,7 +161,7 @@
                 <a href="" class="btn px-0 ml-3">
                   <i class="fas fa-shopping-cart text-primary"></i>
                   <span
-                    class="badge text-secondary border border-secondary rounded-circle"
+                    class="badge text-secondary border border-secondary rounded-circle cartValue"
                     style="padding-bottom: 2px"
                     >0</span
                   >
@@ -209,17 +209,16 @@
         </div>
         <div class="col-lg-4">
           <h5 class="section-title position-relative text-uppercase mb-3">
-            <span class="bg-secondary pr-3">Cart Summary</span>
+            <span class="bg-secondary pr-3"></span>
           </h5>
           <div class="bg-light p-30 mb-5">
            
             <div class="pt-2">
-              <div class="d-flex justify-content-between mt-2">
-                <h5>Subtotal</h5>
-                <h5 id="sub-total"></h5>
               </div>
               <button
-                class="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                class="btn btn-block btn-primary font-weight-bold my-3 py-3",
+                onclick = "window.location.href='checkout.html';"
+                
               >
                 Proceed To Checkout
               </button>

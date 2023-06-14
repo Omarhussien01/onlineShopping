@@ -2,7 +2,7 @@ class Product {
     constructor(obj) {
       this.id = obj._id;
       this.name = obj.name;
-      this.image=obj.image;
+      this.image= obj.image;
       this.price = obj.price;
       this.discount = obj.discount;
       this.rating = obj.rating;
@@ -12,16 +12,14 @@ class Product {
 } 
 
 class CartLine extends Product {
-    product;
     quantity;
-    constructor(name, quantity=1 ) {
+    constructor(name, quantity = 1) {
         super(name);
-     
         this.quantity = quantity;
     }
   
     getTotalPrice() {
-      return this.price* this.quantity;
+      return this.price * this.quantity;
     }
   
     increment() {
@@ -71,7 +69,7 @@ class CartLine extends Product {
               </div>
           </div>
       </td>
-      <td class="align-middle">$${this.price * this.quantity}</td>
+      <td class="align-middle">$${this.getTotalPrice()}</td>
       <td class="align-middle">
           <button class="btn btn-sm btn-danger" type="button" ">
               <i data-id="${this.name}"  class="fa fa-times  remove"></i>
@@ -81,31 +79,16 @@ class CartLine extends Product {
     }
 }
 
-class Cart {
-    cartlines;
-    constructor(productsArray) {
-      this.cartlines = [];
-      //loop to add products into cartlines array
-    }
-  
-    remove(productId) {}
-  
-    getTotal() {}
-  
-    getSubTotal() {}
-}
-
 let list = "";
 const newMap = new Map();
 
 JSON.parse(localStorage.getItem('cart')).forEach(obj => {
-    // listing selected products
-   // const cartItem = new CartLine(obj);
-   // list += cartItem.getHTML();
-   
-    
+    console.log(obj.name);
+    console.log(obj.quantity);
+
     if (newMap.has(obj.name)){
-        newMap.set(obj.name,newMap.get(obj.name)+1);    
+        newMap.set(obj.name,newMap.get(obj.name)+1);
+        
     }else{
         newMap.set(obj.name, obj.quantity);
     }
@@ -117,14 +100,14 @@ dubData= dubData.filter((value, index, self) =>
   index === self.findIndex((t) => (
     t.name === value.name
   ))
-)
+);
 
 dubData.forEach(element=>{
     element.quantity=newMap.get(element.name);
     const cartItem = new CartLine(element);
-    cartItem.quantity=element.quantity
-    console.log(cartItem)
+    cartItem.quantity = element.quantity
     list += cartItem.getHTML();
+
 })
 
 const cartValue=document.getElementsByClassName("cartValue")[0];
@@ -133,7 +116,9 @@ if(localStorage.getItem('cartValue')){
 }
 let count =JSON.parse(localStorage.getItem('cartValue'))||0;
 
+
 document.addEventListener('click',e=>{
+
     if(e.target.classList.contains('incBtn')){
         let priceDiv=e.target.parentElement.parentElement.parentElement.parentElement.parentElement.children[3];
         let inputElement=e.target.parentElement.parentElement.parentElement.children[1];
@@ -146,15 +131,20 @@ document.addEventListener('click',e=>{
         inputValue++;
         order[0].quantity=inputValue;
         inputElement.value=inputValue;
+
         priceDiv.innerText=`$${(inputValue*order[0].price).toFixed(2)}`
         localStorage.setItem('cart',JSON.stringify(dubData))
+
     }else if(e.target.classList.contains('remove')){
+
         let tr=e.target.parentElement.parentElement.parentElement;
         let  uName=e.target.getAttribute("data-id");
         let order = dubData.filter(product=> product.name!= uName);
         tr.remove();
-        localStorage.setItem('cart',JSON.stringify(order))
+        localStorage.setItem('cart',JSON.stringify(order));
+
     }else if(e.target.classList.contains('decBtn')){
+
         console.log(true)
         let priceDiv=e.target.parentElement.parentElement.parentElement.parentElement.parentElement.children[3];
         let inputElement=e.target.parentElement.parentElement.parentElement.children[1];
@@ -171,6 +161,7 @@ document.addEventListener('click',e=>{
             localStorage.setItem('cart',JSON.stringify(dubData))
         }  
     }
+
 })
 
 

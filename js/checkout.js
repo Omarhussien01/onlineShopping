@@ -1,4 +1,5 @@
 class Cart {
+
   cartlines;
   constructor(productsArray) {
     this.cartlines = [];
@@ -16,6 +17,7 @@ class Cart {
     </div>`
     
   }
+
 }
 
 let list = "";
@@ -47,22 +49,26 @@ for ( let i = 0; i < checkbox.length; i++ ) {
 }
 
 for (let i = 0; i < customerCart.cartlines.length; i++) {
+
   
   subTotal += customerCart.cartlines[i].price*customerCart.cartlines[i].quantity;
+
 
 }
 
 for (let i = 0; i < customerCart.cartlines.length; i++) {
 
+
   list += customerCart.getProductList();
   customerCart.cartlines.reverse();
   customerCart.cartlines.pop();
-  
+
 }
 
 list += customerCart.getProductList();
 
 document.getElementById("productList").innerHTML = list;
+
 document.getElementById("subtotal").innerHTML = `$${subTotal.toFixed(2)}`;
 
 
